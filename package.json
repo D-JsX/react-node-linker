@@ -1,7 +1,7 @@
 {
   "name": "react-node-linker",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.2",
   "type": "module",
   "license": "MIT",
   "files": [
@@ -51,5 +51,9 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
-  }
+  },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/D-JsX/react-node-linker"
+}
 }
