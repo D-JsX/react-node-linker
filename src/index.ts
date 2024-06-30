@@ -1,3 +1,4 @@
 import './index.css';
 
-export { default as Button } from './forms/Button';
+export { default as Box } from './box';
+export { default as ConnectionContainer } from './connection-container';

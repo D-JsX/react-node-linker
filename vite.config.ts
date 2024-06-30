@@ -13,7 +13,6 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: {
-				'forms': path.resolve(__dirname, 'src/forms/'),
 				'': path.resolve(__dirname, 'src/index.ts'),
 			},
 			name: 'react-node-linker',
