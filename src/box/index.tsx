@@ -1,33 +1,35 @@
 import React, {
     CSSProperties,
     forwardRef,
-    useImperativeHandle,
     useRef,
     PropsWithChildren,
+    useEffect,
+    useCallback,
   } from 'react';
+  import { useBoxRefs } from '../connection-container/BoxRefsContext';
+  import { useConnections } from '../connection-container/ConnectionsContext';
   
   type BoxProps = {
     id: string;
-    onPointerDown: (
-      id: string,
-      position: 'left' | 'right',
-      event: React.PointerEvent<HTMLDivElement>,
-    ) => void;
   };
   
   const Box = forwardRef(
-    ({ id, onPointerDown, children }: PropsWithChildren<BoxProps>, ref) => {
+    ({ id, children }: PropsWithChildren<BoxProps>, ref) => {
       const leftRef = useRef<HTMLDivElement>(null);
       const rightRef = useRef<HTMLDivElement>(null);
+      const { registerRef } = useBoxRefs();
+      const { setCurrentConnection, currentConnection } = useConnections();
+
+      useEffect(() => {
+        registerRef(id, { leftRef, rightRef });
+      }, [id, registerRef]);
   
-      useImperativeHandle(
-        ref,
-        () => ({
-          leftRef,
-          rightRef,
-        }),
-        [leftRef.current, rightRef.current],
-      );
+      const handlePointerDown = useCallback((position: 'left' | 'right') => (event: React.PointerEvent<HTMLDivElement>) => {
+          setCurrentConnection({
+            from: { id, position },
+            to: { id, position },
+          });
+      }, [leftRef, rightRef, setCurrentConnection, currentConnection]);
   
       return (
         <div
@@ -46,10 +48,9 @@ import React, {
               backgroundColor: '#b1b1b7',
               borderRadius: '50%',
               cursor: 'crosshair',
-              zIndex: 34234234,
               ...preventStyle,
             }}
-            onPointerDown={(event) => onPointerDown(id, 'left', event)}
+            onPointerDown={handlePointerDown('left')}
           />
           <div
             ref={rightRef}
@@ -63,10 +64,9 @@ import React, {
               backgroundColor: '#b1b1b7',
               borderRadius: '50%',
               cursor: 'crosshair',
-              zIndex: 34234234,
               ...preventStyle,
             }}
-            onPointerDown={(event) => onPointerDown(id, 'right', event)}
+            onPointerDown={handlePointerDown('right')}
           />
           {children}
         </div>

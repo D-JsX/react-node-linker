@@ -26,7 +26,7 @@ const BezierCurve: React.FC<BezierCurveProps> = ({
       .append('path')
       .attr('d', pathData)
       .attr('stroke', '#b1b1b7')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 1)
       .attr('fill', 'none')
       .attr('cursor', 'pointer')
       .attr('z-index', 12344);
