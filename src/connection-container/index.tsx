@@ -1,16 +1,24 @@
-import React, { PropsWithChildren } from 'react';
-import { BoxRefsProvider } from './BoxRefsContext';
-import { ConnectionsProvider } from './ConnectionsContext';
-import ConnectionContainerInner from '../components/ConnectionContainerInner';
+import { PropsWithChildren } from "react";
+import ConnectionContainerInner from "../components/ConnectionContainerInner";
+import { ConnectionsProvider } from "./ConnectionsContext";
+import { BoxRefsProvider } from "./BoxRefsContext";
+import { ConnectionContainerProps } from "..";
 
-const ConnectionContainer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  return (
-    <BoxRefsProvider>
-      <ConnectionsProvider>
-        <ConnectionContainerInner>{children}</ConnectionContainerInner>
-      </ConnectionsProvider>
-    </BoxRefsProvider>
-  );
+export const ConnectionContainer: React.FC<PropsWithChildren<ConnectionContainerProps>> = ({
+    children,
+    connections,
+    onConnectionAdded,
+    onClickLink,
+    displayMode
+}) => {
+    return (
+        <BoxRefsProvider>
+            <ConnectionsProvider displayMode={displayMode} connections={connections}>
+                <ConnectionContainerInner onConnectionAdded={onConnectionAdded} onClickLink={onClickLink}>
+                    {children}
+                </ConnectionContainerInner>
+            </ConnectionsProvider>
+        </BoxRefsProvider>
+    );
 };
 
-export default ConnectionContainer;

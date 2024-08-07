@@ -17,70 +17,97 @@ npm install react-node-linker
 Here is an example of how you can use `react-node-linker` in your React application:
 
 ```javascript
-import React from 'react';
-import { ConnectionContainer, Box } from 'react-node-linker';
+import { ConnectionContainer, Box, Connection, Point } from "react-node-linker";
+import { useCallback, useState } from "react";
 
-const App = () => {
+function App() {
+  const [connections, setConnections] = useState<Connection[]>([]);
+  const onConnectionAdded = (fromId: string, toId: string) => {
+    setConnections([
+      ...connections,
+      {
+        from: { id: fromId, position: "right" },
+        to: { id: toId, position: "left" },
+      },
+    ]);
+  };
+
+  const handleLinkClick = useCallback(
+    (fromId: string, toId: string) => {
+      setConnections((prevConnections) =>
+        prevConnections.filter(
+          (connection) =>
+            connection.from.id !== fromId &&
+            (connection.to as Point).id !== toId
+        )
+      );
+    },
+    [setConnections]
+  );
+
+  console.log(connections);
   return (
-    <div style={{ margin: '3rem' }}>
-      <ConnectionContainer>
-        <div style={{ display: 'flex', gap: '3rem' }}>
-          <div>
-            <Box id="box1">
-              <div
-                style={{
-                  width: '200px',
-                  height: '100px',
-                  border: '1px solid black',
-                }}
-              >
-                Box 1
-              </div>
+    <div
+      style={{
+        margin: "3rem",
+        display: "flex",
+        gap: "2rem",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <ConnectionContainer
+        connections={connections}
+        onConnectionAdded={onConnectionAdded}
+        onClickLink={handleLinkClick}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "3rem",
+            padding: "2rem",
+          }}
+        >
+          <div style={{ display: "flex", gap: "3rem" }}>
+            <div>
+              <Box id="box1">
+                <div style={boxStyle}>Box 1</div>
+              </Box>
+            </div>
+
+            <Box id="box2">
+              <div style={boxStyle}>Box 2</div>
             </Box>
           </div>
-
-          <Box id="box2">
-            <div
-              style={{
-                width: '200px',
-                height: '100px',
-                border: '1px solid black',
-              }}
-            >
-              Box 2
-            </div>
-          </Box>
-        </div>
-        <div style={{ display: 'flex', gap: '3rem' }}>
-          <Box id="box3">
-            <div
-              style={{
-                width: '200px',
-                height: '100px',
-                border: '1px solid black',
-              }}
-            >
-              Box 3
-            </div>
-          </Box>
-          <Box id="box4">
-            <div
-              style={{
-                width: '200px',
-                height: '100px',
-                border: '1px solid black',
-              }}
-            >
-              Box 4
-            </div>
-          </Box>
+          <div style={{ display: "flex", gap: "3rem" }}>
+            <Box id="box3">
+              <div style={boxStyle}>Box 3</div>
+            </Box>
+            <Box id="box4">
+              <div style={boxStyle}>Box 4</div>
+            </Box>
+          </div>
         </div>
       </ConnectionContainer>
     </div>
   );
+}
+
+const boxStyle = {
+  width: "200px",
+  height: "100px",
+  border: "1px solid black",
+  borderRadius: "10px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  background: "linear-gradient(135deg, #f3f3f3, #e2e2e2)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 export default App;
+
 ```
 
 ## API
