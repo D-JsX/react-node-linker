@@ -4,6 +4,8 @@
 
 `react-node-linker` is a React library that allows you to link items in a React application by automatically placing circles between each item. Users can also drag and drop to link the items.
 
+![ProjectDemo](./src/assets/demo.gif)
+
 ## Installation
 
 You can install this library via npm:
